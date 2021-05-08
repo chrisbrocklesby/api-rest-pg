@@ -34,6 +34,6 @@ jobs:
         script: |
           cd /home/api-dev
           npm i
-          pm2 stop appname; pm2 start app.js  --name 'api-dev'
+          pm2 stop appname; pm2 start index.js  --name 'api-dev'
           cp *.nginx /etc/nginx/sites-enabled/
           systemctl restart nginx
