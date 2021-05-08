@@ -5,9 +5,9 @@ module.exports = {
   },
   database: {
     host: 'localhost',
-    name: 'Tester',
-    user: 'Chris',
-    password: 'password',
+    name: 'api-test',
+    user: 'postgres',
+    password: 'postgres',
     port: 5432,
   },
   jwt: {
