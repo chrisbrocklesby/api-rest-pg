@@ -1,39 +1,31 @@
-name: Deploy to Production
-
+name: Deploy via SSH
 on:
   push:
     branches:
       - master
-
 jobs:
   build:
-
+    name: Build
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v1
 
-    - name: Copy GitHub repository contents
-      uses: appleboy/scp-action@master
-      env:
-        HOST: ${{ secrets.HOST }}
-        PORT: ${{ secrets.PORT }}
-        USERNAME: ${{ secrets.USERNAME }}
-        KEY: ${{ secrets.KEY }}
-      with:
-        source: "."
-        target: "/home/api-dev"
-
-    - name: Execute remote server commands
-      uses: appleboy/ssh-action@master
-      with:
-        HOST: ${{ secrets.HOST }}
-        PORT: ${{ secrets.PORT }}
-        USERNAME: ${{ secrets.USERNAME }}
-        KEY: ${{ secrets.KEY }}
-        script: |
-          cd /home/api-dev
-          npm i
-          pm2 stop api-dev; pm2 start index.js  --name 'api-dev'
-          cp *.nginx /etc/nginx/sites-enabled/
-          systemctl restart nginx
+  - name: pass environment
+    uses: appleboy/ssh-action@master
++   env:
++     FOO: "BAR"
++     BAR: "FOO"
+    with:
+      host: ${{ secrets.HOST }}
+      username: ${{ secrets.USERNAME }}
+      key: ${{ secrets.KEY }}
+      port: ${{ secrets.PORT }}
+      envs: FOO,BAR
+      script: |
+        echo "I am $FOO"
+        echo "I am $BAR"
+        
+# cd /home/api-dev
+# npm i
+# pm2 stop api-dev; pm2 start index.js  --name 'api-dev'
+# cp *.nginx /etc/nginx/sites-enabled/
+# systemctl restart nginx
