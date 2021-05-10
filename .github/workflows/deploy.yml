@@ -17,7 +17,7 @@ jobs:
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
         source: "."
-        target: "/home"
+        target: "/home/test"
     - name: pass environment
       uses: appleboy/ssh-action@master
       env:
