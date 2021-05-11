@@ -4,7 +4,7 @@ on:
     branches:
       - master
 env:
-  testvar: 'Helllooooo'
+  appid: 'apidev'
 
 jobs:
   build:
@@ -20,7 +20,7 @@ jobs:
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
         source: "."
-        target: "/home/test"
+        target: "/home/${{ env.appid }}"
     - name: Run set up commands on server
       uses: appleboy/ssh-action@master
       with:
@@ -29,10 +29,8 @@ jobs:
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
         script: |
-          echo "I am ${{ env.testvar }}"
-        
-# cd /home/api-dev
-# npm i
-# pm2 stop api-dev; pm2 start index.js  --name 'api-dev'
-# cp *.nginx /etc/nginx/sites-enabled/
-# systemctl restart nginx
+          cd /home/${{ env.appid }}
+          npm i
+          pm2 stop ${{ env.appid }}; pm2 start index.js  --name '${{ env.appid }}'
+          cp *.nginx /etc/nginx/sites-enabled/
+          systemctl restart nginx
