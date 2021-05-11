@@ -32,5 +32,5 @@ jobs:
           cd /home/${{ env.appid }}
           npm i
           pm2 stop ${{ env.appid }}; pm2 start index.js  --name '${{ env.appid }}'
-          cp *.nginx /etc/nginx/sites-enabled/
+          cp nginx.conf /etc/nginx/sites-enabled/${{ env.appid }}.conf
           systemctl restart nginx
