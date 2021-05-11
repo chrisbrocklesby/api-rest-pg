@@ -3,13 +3,16 @@ on:
   push:
     branches:
       - master
+env:
+  testvar: 'Helllooooo'
+
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - name: copy file via ssh password
+    - name: Copy file from GitHub to Server
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.HOST }}
@@ -18,20 +21,15 @@ jobs:
         port: ${{ secrets.PORT }}
         source: "."
         target: "/home/test"
-    - name: pass environment
+    - name: Run set up commands on server
       uses: appleboy/ssh-action@master
-      env:
-        FOO: "BAR"
-        BAR: "FOO"
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
-        envs: FOO,BAR
         script: |
-          echo "I am $FOO"
-          echo "I am $BAR"
+          echo "I am ${{ env.testvar }}"
         
 # cd /home/api-dev
 # npm i
